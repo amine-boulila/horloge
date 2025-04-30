@@ -48,7 +48,7 @@ public class Interface extends JFrame {
             gridPanel.add(panel);
         }
 
-        JButton nextButton = new JButton("Next Step ▶");
+        JButton nextButton = new JButton("Next Step");
         nextButton.setFont(new Font("Arial", Font.BOLD, 18));
         nextButton.addActionListener((ActionEvent e) -> {
             synchronized (stepLock) {
