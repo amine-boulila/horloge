@@ -10,6 +10,9 @@ public class MatrixClock {
     public synchronized void tick() {
         clock[id][id]++;
     }
+     public synchronized void othertic(int processId) {
+        clock[id][processId]++;
+    }
 
     public synchronized void receiveAction(int senderId, int[][] receivedClock) {
         for (int i = 0; i < clock.length; i++) {
@@ -17,7 +20,7 @@ public class MatrixClock {
                 clock[i][j] = Math.max(clock[i][j], receivedClock[i][j]);
             }
         }
-        clock[id][senderId] = Math.max(clock[id][senderId], clock[senderId][senderId]);
+        clock[id][id]++;
     }
 
     public synchronized int[][] getClock() {

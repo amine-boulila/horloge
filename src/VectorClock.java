@@ -11,10 +11,12 @@ public class VectorClock {
         clock[processId]++;
     }
 
-    public synchronized void receiveAction(int[] receivedClock) {
+    public synchronized void receiveAction(int processId,int[] receivedClock) {
         for (int i = 0; i < clock.length; i++) {
             clock[i] = Math.max(clock[i], receivedClock[i]);
         }
+        clock[processId]++;
+        
     }
 
     public synchronized int[] getClock() {

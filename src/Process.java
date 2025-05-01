@@ -107,6 +107,7 @@ private String matrixToString(int[][] matrix) {
         try (Socket socket = new Socket("localhost", targetPort)) {
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             Object clockValue = null;
+            int targetProcessId =targetPort-5000;
 
             if (clockType.equals("scalar")) {
                 scalarClock.tick();
@@ -116,13 +117,13 @@ private String matrixToString(int[][] matrix) {
                 clockValue = vectorClock.getClock();
             } else if (clockType.equals("matrix")) {
                 matrixClock.tick();
+                matrixClock.othertic(targetProcessId);
                 clockValue = matrixClock.getClock();
             }
 
             out.writeObject(new Message(id, clockValue));
             sendCount++;
 
-            int targetProcessId =targetPort-5000;
             System.out.println("Process " + id + " sent message to Process " + targetProcessId);
 
             updateVisualizer();
@@ -151,7 +152,7 @@ private String matrixToString(int[][] matrix) {
                 if (clockType.equals("scalar")) {
                     scalarClock.receiveAction((Integer) message.clock);
                 } else if (clockType.equals("vector")) {
-                    vectorClock.receiveAction((int[]) message.clock);
+                    vectorClock.receiveAction(id,(int[]) message.clock);
                 } else if (clockType.equals("matrix")) {
                     matrixClock.receiveAction(message.senderId, (int[][]) message.clock);
                 }
